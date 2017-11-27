@@ -1,0 +1,18 @@
+---
+sudo: required
+
+services:
+  - docker
+
+install:
+  - docker build -t lgatica/redisrestore-s3:latest .
+
+script:
+  - docker run --rm lgatica/redisrestore-s3:latest aws --version
+
+after_success:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker push lgatica/redisrestore-s3:latest
+
+notifications:
+  email: false
